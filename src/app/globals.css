@@ -1589,3 +1589,39 @@ label small {
     letter-spacing: 0.4px;
   }
 }
+
+
+/* Unified category ballot */
+.category-sections {
+  display: grid;
+  gap: 42px;
+}
+.category-section-heading {
+  align-items: baseline;
+  border-bottom: 1px solid var(--ink);
+  display: flex;
+  justify-content: space-between;
+  padding: 12px 0;
+}
+.category-section-heading h3 {
+  font: 32px var(--serif);
+  letter-spacing: -0.8px;
+  margin: 0;
+}
+.category-section-heading span {
+  color: var(--muted);
+  font-size: 8px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+.category-section .nominee:last-child {
+  border-bottom-color: var(--ink);
+}
+@media (max-width: 700px) {
+  .category-sections {
+    gap: 32px;
+  }
+  .category-section-heading h3 {
+    font-size: 27px;
+  }
+}

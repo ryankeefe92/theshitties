@@ -1,10 +1,12 @@
 import Link from "next/link";
 import { ArrowDown, ArrowUpRight } from "lucide-react";
-import { Fly, Trophy } from "@/components/trophy";
+import { Trophy } from "@/components/trophy";
 import { NomineeList } from "@/components/ui";
 import { finalize, listNominees, season } from "@/lib/service";
 import { voterId } from "@/lib/auth";
+
 export const dynamic = "force-dynamic";
+
 export default async function Home() {
   await finalize();
   const [s, items] = await Promise.all([
@@ -12,98 +14,74 @@ export default async function Home() {
     listNominees(await voterId()),
   ]);
   const closed = new Date(s.closesAt).getTime() <= Date.now();
+
   return (
     <>
       <section className="hero shell">
         <div className="hero-copy">
           <div className="eyebrow">
             <span className="status-dot" />
-            {s.id} AWARDS · {closed ? "VOTING CLOSED" : "NOMINATIONS ARE OPEN"}
+            THE {s.id} SHITTIES · {closed ? "VOTING CLOSED" : "VOTING OPEN"}
           </div>
           <h1>
-            Honoring the worst
+            The annual awards
             <br />
-            upgrades in
+            for things that got
             <br />
-            the <em>world.</em>
+            <em>worse.</em>
           </h1>
           <p>
-            More ads. Fewer features. Higher prices.
-            <br />
-            Nominate the products, services, and public systems that got worse
-            this year.
+            Vote on the year&apos;s worst product and service changes, or
+            nominate one we missed.
           </p>
           <div className="hero-actions">
             <Link className="button" href={closed ? "/results" : "/submit"}>
-              {closed ? "See the dishonorees" : "Nominate the worst"}{" "}
+              {closed ? "View results" : "Submit a nomination"}{" "}
               <ArrowUpRight size={17} />
             </Link>
             <Link className="text-link" href="#nominees">
-              Meet the nominees <ArrowDown size={15} />
+              View nominees <ArrowDown size={15} />
             </Link>
           </div>
         </div>
         <div className="trophy-panel">
-          <span className="hero-fly hero-fly-one" aria-hidden="true">
-            <Fly />
-          </span>
-          <span className="hero-fly hero-fly-two" aria-hidden="true">
-            <Fly />
-          </span>
           <span className="edition">
-            THE FIRST ANNUAL
+            {s.id}
             <br />
-            <strong>SHITTY AWARDS</strong>
+            <strong>THE SHITTIES</strong>
           </span>
           <Trophy />
-          <span className="trophy-caption">
-            Polished. Plated. Perfectly shitty.
-          </span>
-          <span className="orbit-text">THE CREAM ALWAYS SINKS</span>
+          <span className="trophy-caption">THE GOLDEN SHITTY</span>
         </div>
       </section>
-      <div className="ticker">
-        <div className="shell">
-          <span>PROGRESS, DOWN THE DRAIN.</span>
-          <span>〰</span>
-          <span>LESS VALUE. MORE SHAREHOLDER VALUE.</span>
-          <span>〰</span>
-          <span>IT USED TO BE BETTER.</span>
-          <span>〰</span>
-        </div>
-      </div>
+
       <section id="nominees" className="shell ballot">
         <div className="section-heading">
           <div>
-            <div className="eyebrow">THE PEOPLE HAVE COMPLAINTS</div>
+            <div className="eyebrow">CATEGORIES</div>
             <h2>
-              The {s.id} nominees<span>.</span>
+              The {s.id} ballot<span>.</span>
             </h2>
           </div>
           <p>
             {closed ? (
-              "The votes are in. The bar is on the floor."
+              "Voting is closed."
             ) : (
               <>
-                Vote for the worst. Yes, you can pick more than one.
-                <br />
-                <span>
-                  Closes{" "}
-                  {new Intl.DateTimeFormat("en-US", {
-                    dateStyle: "medium",
-                    timeStyle: "short",
-                    timeZone: "America/New_York",
-                  }).format(new Date(s.closesAt))}{" "}
-                  ET.
-                </span>
+                Voting closes{" "}
+                {new Intl.DateTimeFormat("en-US", {
+                  dateStyle: "medium",
+                  timeStyle: "short",
+                  timeZone: "America/New_York",
+                }).format(new Date(s.closesAt))}{" "}
+                ET.
               </>
             )}
           </p>
         </div>
         {!process.env.DATABASE_URL && (
           <div className="demo-note">
-            LOCAL PREVIEW · Sample companies are fictional. Real nominations can
-            be added below.
+            LOCAL PREVIEW · Sample nominations are fictional.
           </div>
         )}
         <NomineeList
@@ -111,35 +89,9 @@ export default async function Home() {
           closed={closed}
         />
         <p className="ballot-footnote">
-          No account. No downvotes. Give a shit about as many as you like.{" "}
-          <Link href="/how-it-works">How voting works ↗</Link>
+          Vote for as many nominees as you want.{" "}
+          <Link href="/how-it-works">How it works ↗</Link>
         </p>
-      </section>
-      <section className="manifesto shell">
-        <span className="eyebrow">IT’S NOT JUST YOU.</span>
-        <h2>
-          Things really <em>are</em>
-          <br />
-          getting shittier.
-        </h2>
-        <div>
-          <p>
-            The app you loved. The service you paid for. The feature that
-            quietly disappeared. Somewhere along the way, “better” started
-            meaning better for someone else.
-          </p>
-          <p>
-            The Shitties gives those decisions the recognition they deserve. You
-            bring the receipts. The internet picks the winners.
-          </p>
-          <p>
-            Each year starts a fresh ballot. The archives remember who keeps
-            coming back.
-          </p>
-          <Link className="text-link" href="/how-it-works">
-            A little more about this whole thing <ArrowUpRight size={16} />
-          </Link>
-        </div>
       </section>
     </>
   );

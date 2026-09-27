@@ -36,7 +36,7 @@ const nominees: EditorialNominee[] = [
   {
     company: "Southwest Airlines",
     headline: "Open seating got assigned a funeral.",
-    category: "features",
+    category: "travel",
     sector: "travel",
     description:
       "Southwest ended nearly six decades of open seating and moved to assigned seats, including a Basic fare whose passengers generally receive their assignments at check-in.",
@@ -66,7 +66,7 @@ const nominees: EditorialNominee[] = [
   {
     company: "American Airlines",
     headline: "The fare is basic. The fees are advanced.",
-    category: "junk-fees",
+    category: "travel",
     sector: "travel",
     description:
       "American raised checked-bag charges and further restricted its Basic Economy fare, making the headline ticket price cover less of an ordinary trip.",
@@ -96,7 +96,7 @@ const nominees: EditorialNominee[] = [
   {
     company: "Delta Air Lines",
     headline: "Your suitcase just hit an upgrade fee.",
-    category: "junk-fees",
+    category: "travel",
     sector: "travel",
     description:
       "Delta raised checked-bag fees across most domestic and short-haul international itineraries, adding as much as $50 to a single bag charge.",
@@ -129,7 +129,7 @@ const nominees: EditorialNominee[] = [
   {
     company: "Spotify",
     headline: "Premium now comes with a premium-er price.",
-    category: "subscriptions",
+    category: "entertainment",
     sector: "entertainment",
     description:
       "Spotify raised every major U.S. Premium plan in February, its latest increase in a recurring series of subscription price hikes.",
@@ -161,7 +161,7 @@ const nominees: EditorialNominee[] = [
   {
     company: "Netflix",
     headline: "The price plot thickens. Again.",
-    category: "value-collapse",
+    category: "entertainment",
     sector: "entertainment",
     description:
       "Netflix raised the price of every U.S. streaming plan in March, including its ad-supported tier and extra-member add-ons.",
@@ -186,7 +186,7 @@ const nominees: EditorialNominee[] = [
   {
     company: "YouTube",
     headline: "Pay more to keep the ads away.",
-    category: "subscriptions",
+    category: "entertainment",
     sector: "entertainment",
     description:
       "YouTube raised U.S. prices across Premium, Premium Lite, and YouTube Music, with the largest jump landing on families.",
@@ -211,7 +211,7 @@ const nominees: EditorialNominee[] = [
   {
     company: "Meta",
     headline: "Instagram photos became AI props—until people noticed.",
-    category: "bait-switch",
+    category: "technology",
     sector: "technology",
     description:
       "Meta briefly let people reference public Instagram accounts when generating AI images, without notifying the people whose photos were used, then removed the feature after backlash.",

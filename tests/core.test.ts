@@ -22,7 +22,7 @@ import { sign, verify, passwordHash, passwordValid } from "../src/lib/auth";
 const input = {
   company: "Test Company",
   headline: "The update that removed everything",
-  category: "features",
+  category: "technology",
   sector: "technology",
   changedAt: "2026-06-15",
   description:
@@ -94,13 +94,13 @@ test("signed tokens reject tampering; password hashes verify", () => {
 });
 test("winner calculation preserves ties and empty categories", () => {
   const result = winners([
-    { category: "ads", count: 2 },
-    { category: "features", count: 2 },
-    { category: "ads", count: 1 },
+    { category: "technology", count: 2 },
+    { category: "travel", count: 2 },
+    { category: "technology", count: 1 },
   ]);
   assert.equal(result.overall.length, 2);
-  assert.equal(result.categories.ads.length, 1);
-  assert.equal(result.categories["lock-in"].length, 0);
+  assert.equal(result.categories.technology.length, 1);
+  assert.equal(result.categories["fast-food"].length, 0);
   assert.equal(winners([]).overall.length, 0);
 });
 test("database-backed submission, votes, moderation, reports, limits and finalization", async () => {

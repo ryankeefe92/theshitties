@@ -8,10 +8,7 @@ import { upload } from "@vercel/blob/client";
 import { ArrowUp, ArrowUpRight, Check, Flag, Loader2 } from "lucide-react";
 import {
   categories,
-  category,
   outcome,
-  sectors,
-  sector,
   sourceTypes,
   type Nominee,
   type NomineeImage,
@@ -72,7 +69,7 @@ export function Vote({
     <div className="vote-wrap">
       <button
         className={"vote " + (state.voted ? "voted" : "")}
-        aria-label={`${state.voted ? "Remove your vote for" : "Give a shit about"} ${nominee.company}`}
+        aria-label={`${state.voted ? "Remove your vote for" : "Vote for"} ${nominee.company}`}
         aria-pressed={state.voted}
         disabled={busy || closed}
         onClick={async () => {
@@ -98,7 +95,7 @@ export function Vote({
       >
         <ArrowUp size={17} />
         <span>{state.count.toLocaleString()}</span>
-        <small>{state.voted ? "GIVEN" : "GIVE A SHIT"}</small>
+        <small>{state.voted ? "VOTED" : "VOTE"}</small>
       </button>
       {error && (
         <span role="alert" className="vote-error">
@@ -258,72 +255,30 @@ export function NomineeList({
   items: Nominee[];
   closed: boolean;
 }) {
-  const [filter, setFilter] = useState("all");
-  const [sectorFilter, setSectorFilter] = useState("all");
   const [sort, setSort] = useState("top");
-  const filtered = items
-    .filter(
-      (n) =>
-        (filter === "all" || n.category === filter) &&
-        (sectorFilter === "all" || n.sector === sectorFilter),
-    )
-    .sort((a, b) =>
+  const sortItems = (rows: Nominee[]) =>
+    [...rows].sort((a, b) =>
       sort === "new"
         ? new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
         : b.count - a.count ||
           new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime(),
     );
+
+  const sections = categories
+    .map((item) => ({
+      ...item,
+      items: sortItems(items.filter((nominee) => nominee.category === item.id)),
+    }))
+    .filter((item) => item.items.length);
+
   return (
     <>
-      <div className="filter-stack">
-        <div className="filter-row">
-          <span>By award</span>
-          <div className="filters" aria-label="Filter nominees by award">
-            <button
-              aria-pressed={filter === "all"}
-              onClick={() => setFilter("all")}
-            >
-              All nominees <span>{items.length}</span>
-            </button>
-            {categories.map((c) => (
-              <button
-                key={c.id}
-                aria-pressed={filter === c.id}
-                onClick={() => setFilter(c.id)}
-              >
-                {c.name}
-              </button>
-            ))}
-          </div>
-        </div>
-        <div className="filter-row">
-          <span>By sector</span>
-          <div className="filters" aria-label="Filter nominees by sector">
-            <button
-              aria-pressed={sectorFilter === "all"}
-              onClick={() => setSectorFilter("all")}
-            >
-              All sectors
-            </button>
-            {sectors.map((item) => (
-              <button
-                key={item.id}
-                aria-pressed={sectorFilter === item.id}
-                onClick={() => setSectorFilter(item.id)}
-              >
-                {item.name}
-              </button>
-            ))}
-          </div>
-        </div>
-      </div>
       <div className="list-meta">
         <span>
-          {filtered.length} NOMINATION{filtered.length === 1 ? "" : "S"} · ONE
-          VERY LOW BAR
+          {items.length} NOMINATION{items.length === 1 ? "" : "S"}
         </span>
         <label>
-          Sort by{" "}
+          Sort within categories{" "}
           <select
             aria-label="Sort nominees"
             value={sort}
@@ -334,54 +289,63 @@ export function NomineeList({
           </select>
         </label>
       </div>
-      <div className="nominee-list">
-        {filtered.length ? (
-          filtered.map((n, i) => (
-            <article className="nominee" key={n.id}>
-              <span className="rank">{String(i + 1).padStart(2, "0")}</span>
-              {n.images?.[0] && (
-                <Link
-                  className="nominee-cover"
-                  href={`/nominees/${n.id}`}
-                  aria-label={`View images for ${n.company}`}
-                >
-                  <ImageElement image={n.images[0]} />
-                </Link>
-              )}
-              <div className="nominee-copy">
-                <div className="nominee-overline">
-                  <span>{n.company}</span>
-                  <span className="category-tag">
-                    {category(n.category)?.name}
-                  </span>
-                  <span className="sector-tag">{sector(n.sector).name}</span>
-                </div>
-                <Link className="nominee-title" href={"/nominees/" + n.id}>
-                  {n.headline}
-                  <ArrowUpRight size={19} />
-                </Link>
-                <p>{n.description}</p>
-                <NomineeBadges nominee={n} />
+      {sections.length ? (
+        <div className="category-sections">
+          {sections.map((section) => (
+            <section
+              className="category-section"
+              key={section.id}
+              aria-labelledby={`category-${section.id}`}
+            >
+              <div className="category-section-heading">
+                <h3 id={`category-${section.id}`}>{section.name}</h3>
+                <span>
+                  {section.items.length} nomination
+                  {section.items.length === 1 ? "" : "s"}
+                </span>
               </div>
-              <Vote nominee={n} closed={closed} />
-            </article>
-          ))
-        ) : (
-          <div className="empty">
-            <div className="empty-plunger" aria-hidden="true">
-              ↟
-            </div>
-            <h3>The bowl is clean—for now.</h3>
-            <p>
-              No nominations have hit the fan yet. Know something that got
-              worse?
-            </p>
-            <Link className="button" href="/submit">
-              Make the first nomination <ArrowUpRight size={16} />
-            </Link>
-          </div>
-        )}
-      </div>
+              <div className="nominee-list">
+                {section.items.map((n, i) => (
+                  <article className="nominee" key={n.id}>
+                    <span className="rank">
+                      {String(i + 1).padStart(2, "0")}
+                    </span>
+                    {n.images?.[0] && (
+                      <Link
+                        className="nominee-cover"
+                        href={`/nominees/${n.id}`}
+                        aria-label={`View images for ${n.company}`}
+                      >
+                        <ImageElement image={n.images[0]} />
+                      </Link>
+                    )}
+                    <div className="nominee-copy">
+                      <div className="nominee-overline">
+                        <span>{n.company}</span>
+                      </div>
+                      <Link className="nominee-title" href={"/nominees/" + n.id}>
+                        {n.headline}
+                        <ArrowUpRight size={19} />
+                      </Link>
+                      <p>{n.description}</p>
+                      <NomineeBadges nominee={n} />
+                    </div>
+                    <Vote nominee={n} closed={closed} />
+                  </article>
+                ))}
+              </div>
+            </section>
+          ))}
+        </div>
+      ) : (
+        <div className="empty">
+          <h3>No nominations yet.</h3>
+          <p>Know something that got worse this year?</p>
+          <Link className="button" href="/submit">
+            Submit a nomination <ArrowUpRight size={16} />
+          </Link>
+        </div>
+      )}
     </>
   );
 }
@@ -524,7 +488,7 @@ export function SubmissionForm({
             impact: data.get("impact"),
             changedAt: data.get("changedAt"),
             category: data.get("category"),
-            sector: data.get("sector"),
+            sector: data.get("category"),
             sources: sources.map(({ id: _id, ...source }) => source),
             images: prepared,
             website: data.get("website"),
@@ -546,7 +510,7 @@ export function SubmissionForm({
           maxLength={100}
           value={company}
           onChange={(e) => setCompany(e.target.value)}
-          placeholder="Who deserves the dishonor?"
+          placeholder="Company or product name"
         />
       </label>
       {similar.length > 0 && (
@@ -566,25 +530,14 @@ export function SubmissionForm({
           required
           minLength={8}
           maxLength={140}
-          placeholder="The update nobody asked for"
+          placeholder="Describe the change"
         />
       </label>
       <label>
-        Award category
+        Category
         <select name="category" required>
-          <option value="">Choose their particular specialty</option>
-          {categories.map((c) => (
-            <option key={c.id} value={c.id}>
-              {c.name}
-            </option>
-          ))}
-        </select>
-      </label>
-      <label>
-        Sector
-        <select name="sector" required>
-          <option value="">Choose a sector</option>
-          {sectors.map((item) => (
+          <option value="">Choose a category</option>
+          {categories.map((item) => (
             <option key={item.id} value={item.id}>
               {item.name}
             </option>

@@ -2,6 +2,7 @@ import { randomUUID } from "node:crypto";
 import { del, head } from "@vercel/blob";
 import { getDb, type Connection } from "./db";
 import {
+  categoryId,
   outcomes,
   type Nominee,
   type NomineeImage,
@@ -112,10 +113,12 @@ export function normalizeNominee(row: Nominee): Nominee {
       };
     })
     .filter((item): item is NomineeImage => item !== null);
+  const normalizedCategory = categoryId(row.category, row.sector);
   return {
     ...row,
     changedAt: dateOnly(row.changedAt),
-    sector: row.sector || "other",
+    category: normalizedCategory,
+    sector: normalizedCategory,
     sources,
     images,
     outcome: outcomes.some((item) => item.id === row.outcome)
@@ -190,7 +193,7 @@ export async function submitNominee(input: unknown) {
         n.impact,
         n.changedAt,
         n.category,
-        n.sector,
+        n.category,
         JSON.stringify(n.sources),
         JSON.stringify(n.images),
       ],
