@@ -51,7 +51,7 @@ ALLOW_EDITORIAL_IMPORT=true npm run db:add-2026-nominees
 - All ballot writes and finalization lock the season row. Vote totals and nominee text are snapshotted on the first homepage, results, admin visit, or moderation action after closing. The deadline is enforced even if no page is visited at the exact closing time.
 - Each category's highest count wins; the overall highest count wins The Golden Shitty. Ties, including zero-vote ties, share awards. Empty categories have no winner.
 - Reports never automatically hide entries. Admins can hide/restore, mark duplicates without transferring votes, resolve reports, verify receipts, and mark a change ongoing, partially fixed, reversed, or settled. Saved annual results stay immutable when nominations are moderated later.
-- Sector filters cut across the award categories. Public company records connect nominations across seasons, repeat offenders get a leaderboard, and partial fixes or reversals appear in the Backlash Worked gallery.
+- Nominations use one category system instead of separate award and sector taxonomies. Public company records connect nominations across seasons, repeat offenders get a leaderboard, and partial fixes or reversals appear in the Backlash Worked gallery.
 - No public login, comments, downvotes, analytics, or submitter editing. Admins can remove individual nomination images.
 - To open another season, add a new row to `seasons` through a reviewed migration after finalizing the previous season. Historical snapshots remain intact. V1 admin settings edit the current deadline; they do not create seasons.
 

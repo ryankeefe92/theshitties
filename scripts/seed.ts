@@ -23,7 +23,7 @@ async function main() {
     {
       company: "Streamly",
       headline: "Now with ads. Even when you pay.",
-      category: "ads",
+      category: "entertainment",
       sector: "entertainment",
       description: "The fictional streaming service added commercial breaks to its paid plan. The uninterrupted experience became an extra.",
       before: "The paid plan offered uninterrupted films and shows without commercial breaks.",
@@ -34,7 +34,7 @@ async function main() {
     {
       company: "CloudPocket",
       headline: "Your files. Their exit fee.",
-      category: "lock-in",
+      category: "technology",
       sector: "technology",
       description: "This fictional storage company replaced one-click export with a paid migration package.",
       before: "Customers could download a complete archive of their own files with one click.",
@@ -45,7 +45,7 @@ async function main() {
     {
       company: "NoteNest",
       headline: "The search feature has left the chat.",
-      category: "features",
+      category: "technology",
       sector: "technology",
       description: "A fictional note-taking app removed offline search in its latest update.",
       before: "Users could search downloaded notebooks without an internet connection.",
@@ -56,7 +56,7 @@ async function main() {
     {
       company: "FitLoop",
       headline: "Congratulations. Your watch needs a subscription.",
-      category: "subscriptions",
+      category: "technology",
       sector: "technology",
       description: "This fictional fitness tracker moved previously included sleep history behind a monthly membership.",
       before: "Device owners could view their complete sleep history as part of the purchase.",
@@ -67,7 +67,7 @@ async function main() {
     {
       company: "QuietSearch",
       headline: "The private search engine that changed its mind.",
-      category: "bait-switch",
+      category: "technology",
       sector: "technology",
       description: "A fictional search engine changed its privacy-first default experience.",
       before: "The default search experience did not use individual search history for promotions.",
@@ -78,8 +78,8 @@ async function main() {
     {
       company: "RecipeRoom",
       headline: "A recipe for more pop-ups.",
-      category: "ads",
-      sector: "entertainment",
+      category: "food-drink",
+      sector: "food-drink",
       description: "This fictional recipe site now covers its ingredient lists with autoplay video and sticky promotions.",
       before: "Readers could open a recipe and reach the ingredient list without an overlay.",
       after: "A March 2026 redesign added autoplay video and promotions over the recipe content.",

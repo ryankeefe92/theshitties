@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { categories, sectors, sourceTypes } from "./constants";
+import { categories, sourceTypes } from "./constants";
 const source = z
   .string()
   .trim()
@@ -34,7 +34,7 @@ export const nominationInput = z.object({
   impact: z.string().trim().min(20).max(1500),
   changedAt: z.iso.date(),
   category: z.enum(categories.map((c) => c.id)),
-  sector: z.enum(sectors.map((item) => item.id)),
+  sector: z.enum(categories.map((item) => item.id)).optional(),
   sources: z.array(nominationSource).min(1).max(3),
   images: z.array(image).max(3).default([]),
   website: z.string().max(0).optional(),

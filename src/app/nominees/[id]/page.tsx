@@ -2,7 +2,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { listNominees, season } from "@/lib/service";
 import { voterId } from "@/lib/auth";
-import { category, sector, sourceType } from "@/lib/constants";
+import { category, sourceType } from "@/lib/constants";
 import { ImageGallery, NomineeBadges, Vote, Report } from "@/components/ui";
 export const dynamic = "force-dynamic";
 export async function generateMetadata({
@@ -35,8 +35,7 @@ export default async function Detail({
         ← Back to the nominees
       </Link>
       <div className="eyebrow">
-        {n.seasonId} COMMUNITY NOMINATION · {category(n.category)?.name} ·{" "}
-        {sector(n.sector).name}
+        {n.seasonId} NOMINATION · {category(n.category).name}
       </div>
       <h1>{n.headline}</h1>
       <div className="detail-company">
@@ -114,11 +113,8 @@ export default async function Detail({
         ))}
       </section>
       <p className="muted">
-        A community-submitted nomination, not an official award announcement.
-        {n.verified
-          ? " An editor checked that the cited sources support the core change and date; this is not an endorsement of every opinion in the nomination."
-          : " Its receipts have not yet received an editorial verification badge."}{" "}
-        Votes reflect informal community opinion.
+        Community nomination.{" "}
+        {n.verified ? "Receipts checked by an editor." : "Receipts not yet verified."}
       </p>
       {n.status === "visible" && <Report id={n.id} />}
     </article>
